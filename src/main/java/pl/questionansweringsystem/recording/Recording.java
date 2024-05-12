@@ -25,8 +25,9 @@ public class Recording {
     @Column(name = "CREATE_DATE_TIME")
     private LocalDateTime createDateTime;
 
-    public Recording(String filePath, LocalDateTime createDateTime) {
+    public Recording(String filePath, String transcribedText, LocalDateTime createDateTime) {
         this.filePath = filePath;
+        this.transcribedText = transcribedText;
         this.createDateTime = createDateTime;
     }
 }

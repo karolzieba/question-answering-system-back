@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.questionansweringsystem.speechtotext.SpeechToTextService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class RecordingService {
 
     private final RecordingRepository repository;
+    private final SpeechToTextService speechToTextService;
 
     @Value("${files.path}")
     private String filesPath;
@@ -43,8 +45,9 @@ public class RecordingService {
         return new RecordingDTO(recording.get());
     }
 
-    public void add(MultipartFile file) throws IOException {
-        if (file.isEmpty()) throw new FileNotFoundException("Uploaded file is empty.");
+    public void add(MultipartFile file) throws Exception {
+        if (file == null || file.isEmpty()) throw new FileNotFoundException("Uploaded file is empty.");
+        if (!file.getOriginalFilename().contains(".wav")) throw new FileNotFoundException("File in bad format.");
         Path path = Paths.get(filesPath);
         if (!Files.exists(path)) {
             Files.createDirectories(path);
@@ -53,7 +56,16 @@ public class RecordingService {
         path = Paths.get(path.toFile().getAbsolutePath() + "\\" + file.getOriginalFilename());
         Path savedFile = Files.write(path, fileBytes);
         if (!Files.exists(savedFile)) throw new IOException("Error during file save.");
-        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), LocalDateTime.now());
+        String textFromSpeech;
+        try {
+            textFromSpeech = speechToTextService.recognizeTextFromFile(path.toAbsolutePath().toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Files.delete(path);
+            throw ex;
+        }
+        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech,
+                LocalDateTime.now());
         repository.save(recording);
     }
 
