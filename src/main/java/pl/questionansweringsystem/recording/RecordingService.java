@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import pl.questionansweringsystem.questionAnswering.QuestionAnsweringService;
 import pl.questionansweringsystem.speechtotext.SpeechToTextService;
 
 import java.io.FileNotFoundException;
@@ -26,6 +28,7 @@ public class RecordingService {
 
     private final RecordingRepository repository;
     private final SpeechToTextService speechToTextService;
+    private final QuestionAnsweringService questionAnsweringService;
 
     @Value("${files.path}")
     private String filesPath;
@@ -64,7 +67,8 @@ public class RecordingService {
             Files.delete(path);
             throw ex;
         }
-        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech,
+        String answer = questionAnsweringService.getAnswer(textFromSpeech);
+        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech, answer,
                 LocalDateTime.now());
         repository.save(recording);
     }
