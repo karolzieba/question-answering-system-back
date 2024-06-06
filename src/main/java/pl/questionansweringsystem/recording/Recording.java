@@ -27,8 +27,8 @@ public class Recording {
     @Column(name = "ID_USER")
     private Long idUser;
 
-    public Recording(String filePath, String transcribedText, LocalDateTime createDateTime, Long idUser) {
-    public Recording(String filePath, String transcribedText, String answer, LocalDateTime createDateTime) {
+    public Recording(String filePath, String transcribedText, String answer,
+                     LocalDateTime createDateTime, Long idUser) {
         this.filePath = filePath;
         this.answer = answer;
         this.transcribedText = transcribedText;

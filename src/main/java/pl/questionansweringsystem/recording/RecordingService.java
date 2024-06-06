@@ -70,11 +70,9 @@ public class RecordingService {
             Files.delete(path);
             throw ex;
         }
-        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech,
-                LocalDateTime.now(), userService.getId());
         String answer = questionAnsweringService.getAnswer(textFromSpeech);
         Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech, answer,
-                LocalDateTime.now());
+                LocalDateTime.now(), userService.getId());
         repository.save(recording);
     }
 
