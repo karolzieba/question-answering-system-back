@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.questionansweringsystem.recording.dto.RecordingResponse;
+import pl.questionansweringsystem.user.UserService;
 
 import pl.questionansweringsystem.questionAnswering.QuestionAnsweringService;
 import pl.questionansweringsystem.speechtotext.SpeechToTextService;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RecordingService {
 
+    private final UserService userService;
     private final RecordingRepository repository;
     private final SpeechToTextService speechToTextService;
     private final QuestionAnsweringService questionAnsweringService;
@@ -33,19 +36,19 @@ public class RecordingService {
     @Value("${files.path}")
     private String filesPath;
 
-    public List<RecordingDTO> getAll(Integer page, Integer size) {
+    public List<RecordingResponse> getAll(Integer page, Integer size) {
         Pageable pageRequest = PageRequest.of(page, size);
-        Page<Recording> recordings = repository.findAll(pageRequest);
+        Page<Recording> recordings = repository.findAllByIdUser(userService.getId(), pageRequest);
         if (recordings.isEmpty()) throw new EntityNotFoundException("Any entity of type Recording does not exist.");
         return recordings.stream()
-                .map(RecordingDTO::new)
+                .map(RecordingResponse::new)
                 .collect(Collectors.toList());
     }
 
-    public RecordingDTO getById(Long id) {
-        Optional<Recording> recording = repository.findById(id);
+    public RecordingResponse getById(Long id) {
+        Optional<Recording> recording = repository.findByIdRecordingAndIdUser(id, userService.getId());
         if (recording.isEmpty()) throw new EntityNotFoundException("Entity Recording with ID " + id + " not found.");
-        return new RecordingDTO(recording.get());
+        return new RecordingResponse(recording.get());
     }
 
     public void add(MultipartFile file) throws Exception {
@@ -67,6 +70,8 @@ public class RecordingService {
             Files.delete(path);
             throw ex;
         }
+        Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech,
+                LocalDateTime.now(), userService.getId());
         String answer = questionAnsweringService.getAnswer(textFromSpeech);
         Recording recording = new Recording(savedFile.toFile().getAbsolutePath(), textFromSpeech, answer,
                 LocalDateTime.now());

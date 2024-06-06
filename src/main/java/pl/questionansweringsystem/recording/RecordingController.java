@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.questionansweringsystem.recording.dto.RecordingResponse;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -17,8 +18,8 @@ public class RecordingController {
     private final RecordingService service;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RecordingDTO>> getAll(@RequestParam("page") Integer page,
-                                                  @RequestParam("size") Integer size) {
+    public ResponseEntity<List<RecordingResponse>> getAll(@RequestParam("page") Integer page,
+                                                          @RequestParam("size") Integer size) {
         try {
             return new ResponseEntity<>(service.getAll(page, size), HttpStatus.OK);
         } catch (Exception ex) {
@@ -28,7 +29,7 @@ public class RecordingController {
     }
 
     @GetMapping
-    public ResponseEntity<RecordingDTO> get(@RequestParam("id") Long id) {
+    public ResponseEntity<RecordingResponse> get(@RequestParam("id") Long id) {
         try {
             return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
         } catch (Exception ex) {

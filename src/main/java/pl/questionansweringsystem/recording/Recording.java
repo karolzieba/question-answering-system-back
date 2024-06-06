@@ -24,11 +24,15 @@ public class Recording {
     private String answer;
     @Column(name = "CREATE_DATE_TIME")
     private LocalDateTime createDateTime;
+    @Column(name = "ID_USER")
+    private Long idUser;
 
+    public Recording(String filePath, String transcribedText, LocalDateTime createDateTime, Long idUser) {
     public Recording(String filePath, String transcribedText, String answer, LocalDateTime createDateTime) {
         this.filePath = filePath;
         this.answer = answer;
         this.transcribedText = transcribedText;
         this.createDateTime = createDateTime;
+        this.idUser = idUser;
     }
 }
