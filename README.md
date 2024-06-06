@@ -8,8 +8,8 @@ a następnie używa usługi Azure Question Answering do uzyskania odpowiedzi na 
 Transkrypcja oraz odpowiedź są zapisywane w bazie danych PostgreSQL i wyświetlane w GUI.
 
 ## Technologie
-
 - **Backend**: Java, Spring Boot
+- **Frontend** JavaScript, React
 - **Baza Danych**: PostgreSQL
 - **Usługi Chmurowe**: Azure Speech, Azure Question Answering
 - **Inne**: Maven, Docker
@@ -23,6 +23,7 @@ Transkrypcja oraz odpowiedź są zapisywane w bazie danych PostgreSQL i wyświet
 - Docker (opcjonalnie do uruchomienia PostgreSQL)
 - Konto Azure z subskrypcją dla usług Speech i Question Answering
 - Keycloak 22.03
+- frontend: https://github.com/wojszy/question-answering-system-front
 
 ### Obługa aplikacji
 
