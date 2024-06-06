@@ -62,7 +62,4 @@ setx SPEECH_REGION {region w którym stworzyliśmy usługę}
     azure.questionanswering.api-key {klucz do korzystania z API usługi}
 
 ### Grupa
--Kamil Erbel
--Wojciech Szymański
--Karol Zięba
--Jakub Ziomek
+Kamil Erbel, Wojciech Szymański, Karol Zięba, Jakub Ziomek
