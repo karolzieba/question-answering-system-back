@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/user").permitAll()
+                        .requestMatchers("/files/**").permitAll()
                         .anyRequest().hasRole(USER_ROLE_VALUE))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwtAuthenticationConverter()))
                 .build();

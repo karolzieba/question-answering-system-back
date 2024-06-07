@@ -21,7 +21,7 @@ public class FileController {
 
 
 
-    @GetMapping("/{filename:.+}")
+@GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         try {
             Path fileStorageLocation = Paths.get(filesPath).toAbsolutePath().normalize();
@@ -30,7 +30,7 @@ public class FileController {
 
             if(resource.exists()) {
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"\" + resource.getFilename() + \"\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
                         .body(resource);
             } else {
                 return ResponseEntity.notFound().build();
