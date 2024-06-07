@@ -16,7 +16,7 @@ Transkrypcja oraz odpowiedź są zapisywane w bazie danych PostgreSQL i wyświet
 
 ## Konfiguracja projektu
 
-![architektura systemu](diagram-architektury.png)
+![architektura systemu](diagram_architektury.png)
 
 ### Wymagania wstępne
 
