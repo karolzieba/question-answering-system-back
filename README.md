@@ -16,6 +16,8 @@ Transkrypcja oraz odpowiedź są zapisywane w bazie danych PostgreSQL i wyświet
 
 ## Konfiguracja projektu
 
+![architektura systemu] (diagram-architektury.png)
+
 ### Wymagania wstępne
 
 - Java 17
